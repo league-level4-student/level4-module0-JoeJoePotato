@@ -42,11 +42,44 @@
 package extras.the_wrong_way_cow;
 
 public class TheWrongWayCow {
+	static int x;
+	static int y;
 
-    public static int[] findWrongWayCow(final char[][] field) {
-        // Fill in the code to return the x,y coordinate position of the
-        // head (letter 'c') of the wrong way cow!
-        
-        return null;
-    }
+	public static int[] findWrongWayCow(final char[][] field) {
+		// Fill in the code to return the x,y coordinate position of the
+		// head (letter 'c') of the wrong way cow!
+		for (int i = 2; i < field.length; i++) {
+			for (int j = 0; j < field[i].length; j++) {
+				if (field[i][j] == 'c') {
+					if (searchforo(field, i, j) == true)
+						;
+				}
+			}
+		}
+		return null;
+	}
+
+	public static boolean searchforo(char[][] f, int i, int j) {
+		if (i - 1 > -1) {
+			if (f[i - 1][j] == 'o') {
+				x = i - 1;
+				y = j;
+				return true;
+			}else if (f[i - 1][j] == '.') {
+					if (i - 2 > -1) {
+						return searchforo(f, i - 2, j);
+					} else {
+						return searchforo(f, f.length-1,j-1);
+					}
+			}else {
+				return false;	
+			else {
+				return searchforo(f, f.length-1, j-1)
+			
+			}
+
+			}	
+		
+	
+	}
 }
