@@ -3,8 +3,14 @@ package _02_Pixel_Art;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javax.swing.JPanel;
+
+
 
 public class GridPanel extends JPanel{
 
@@ -15,9 +21,10 @@ public class GridPanel extends JPanel{
 	private int pixelHeight;
 	private int rows;
 	private int cols;
-	
+	private static final String DATA_FILE = "src/_02_Pixel_Art/DATA_FILE";
 	//1. Create a 2D array of pixels. Do not initialize it yet.
-	Pixel[][] ps;
+	Pixel[][] ps=load();
+	
 	private Color color;
 	
 	public GridPanel(int w, int h, int r, int c) {
@@ -34,6 +41,7 @@ public class GridPanel extends JPanel{
 		setPreferredSize(new Dimension(windowWidth, windowHeight));
 		
 		//2. Initialize the pixel array using the rows and cols variables.
+		
 		ps=new Pixel[rows][cols];
 		
 		//3. Iterate through the array and initialize each element to a new pixel.
@@ -74,5 +82,26 @@ public class GridPanel extends JPanel{
 		}
 		
 	}
+	public  int getR() {
+		return rows;
+	}
+	public  int getC() {
+		return cols;
+	}
+	private  Pixel[][] load() {
+		try (FileInputStream fis = new FileInputStream(new File(DATA_FILE));
+				ObjectInputStream ois = new ObjectInputStream(fis)) {
+			return (Pixel[][]) ois.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new Pixel[getR()][getC()];
+		} catch (ClassNotFoundException e) {
+			// This can occur if the object we read from the file is not
+			// an instance of any recognized class
+			e.printStackTrace();
+			return new Pixel[getR()][getC()];
+		}
+	}
+	
 	
 }
