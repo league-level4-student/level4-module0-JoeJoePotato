@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
@@ -22,8 +23,9 @@ public class GridPanel extends JPanel{
 	private int rows;
 	private int cols;
 	private static final String DATA_FILE = "src/_02_Pixel_Art/DATA_FILE";
+	
 	//1. Create a 2D array of pixels. Do not initialize it yet.
-	Pixel[][] ps=load();
+	Pixel[][] ps;
 	
 	private Color color;
 	
@@ -42,14 +44,12 @@ public class GridPanel extends JPanel{
 		
 		//2. Initialize the pixel array using the rows and cols variables.
 		
-		ps=new Pixel[rows][cols];
+		ps=load();
+		
 		
 		//3. Iterate through the array and initialize each element to a new pixel.
-		for (int i = 0; i < ps.length; i++) {
-			for (int j = 0; j < ps[i].length; j++) {
-				ps[i][j]=new Pixel(i,j);
-			}
-		}
+	
+		
 		
 	}
 	
@@ -89,17 +89,31 @@ public class GridPanel extends JPanel{
 		return cols;
 	}
 	private  Pixel[][] load() {
+		System.out.println("LOADING");
 		try (FileInputStream fis = new FileInputStream(new File(DATA_FILE));
 				ObjectInputStream ois = new ObjectInputStream(fis)) {
-			return (Pixel[][]) ois.readObject();
+			Saver ss= (Saver) ois.readObject();
+			return ss.ps;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return new Pixel[getR()][getC()];
+			Pixel[][] p=new Pixel[getR()][getC()];
+			for (int i = 0; i < p.length; i++) {
+				for (int j = 0; j < p[i].length; j++) {
+					p[i][j]=new Pixel(i,j);
+				}
+			}
+			return p;
 		} catch (ClassNotFoundException e) {
 			// This can occur if the object we read from the file is not
 			// an instance of any recognized class
 			e.printStackTrace();
-			return new Pixel[getR()][getC()];
+			Pixel[][] p=new Pixel[getR()][getC()];
+			for (int i = 0; i < p.length; i++) {
+				for (int j = 0; j < p[i].length; j++) {
+					p[i][j]=new Pixel(i,j);
+				}
+			}
+			return p;
 		}
 	}
 	

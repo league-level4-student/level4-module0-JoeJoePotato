@@ -10,8 +10,8 @@ public class Saver implements Serializable{
 	private static final long serialVersionUID = 1L;
 public Pixel[][] ps;
 
-public Saver(Pixel[][] ps2) {
-	this.ps = ps2;
+public Saver(Pixel[][] ps) {
+	this.ps = ps;
 }
 
 

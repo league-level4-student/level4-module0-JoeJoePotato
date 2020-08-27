@@ -1,6 +1,8 @@
 package _02_Pixel_Art;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -11,15 +13,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class PixelArtMaker implements MouseListener, KeyListener {
+public class PixelArtMaker implements MouseListener, KeyListener, ActionListener {
 	private JFrame window;
 	private GridInputPanel gip;
 	private GridPanel gp;
 	ColorSelectionPanel csp;
 	public Saver s;
 	private static final String DATA_FILE = "src/_02_Pixel_Art/DATA_FILE";
+	public JButton save=new JButton("save");
 
 	public void start() {
 		gip = new GridInputPanel(this);
@@ -42,7 +46,8 @@ public class PixelArtMaker implements MouseListener, KeyListener {
 		gp.repaint();
 		gp.addMouseListener(this);
 		window.pack();
-		window.addKeyListener(this);
+		gp.add(save);
+		save.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
@@ -77,29 +82,6 @@ public class PixelArtMaker implements MouseListener, KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == 83) {
-			s = new Saver(gp.ps);
-
-			FileOutputStream fos;
-			try {
-				fos = new FileOutputStream(new File(DATA_FILE));
-
-				ObjectOutputStream oos = null;
-				try {
-					oos = new ObjectOutputStream(fos);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					oos.writeObject(s);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 
 		}
 	}
@@ -113,6 +95,31 @@ public class PixelArtMaker implements MouseListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		s = new Saver(gp.ps);
+System.out.println("s");
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(new File(DATA_FILE));
+
+			ObjectOutputStream oos = null;
+			try {
+				oos = new ObjectOutputStream(fos);
+				oos.writeObject(s);
+				oos.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 }
